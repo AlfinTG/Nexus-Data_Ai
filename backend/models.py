@@ -1,8 +1,12 @@
-from sqlalchemy import Column, Integer, String, DateTime
+from sqlalchemy import Column, Integer, String, DateTime, Text
 from sqlalchemy.sql import func
 from pydantic import BaseModel
 from database import Base
 
+
+# ==========================================
+# Database Models
+# ==========================================
 
 class Project(Base):
     __tablename__ = "projects"
@@ -18,10 +22,25 @@ class Document(Base):
 
     id = Column(Integer, primary_key=True, index=True)
     project_id = Column(Integer, nullable=False, index=True)
+
     filename = Column(String, nullable=False)
     file_path = Column(String, nullable=False)
-    upload_time = Column(DateTime(timezone=True), server_default=func.now())
 
+    # Full extracted PDF text
+    text = Column(Text, nullable=True)
+
+    # Processing status
+    status = Column(String, default="processed")
+
+    upload_time = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
+
+
+# ==========================================
+# Pydantic Schemas
+# ==========================================
 
 class ProjectCreate(BaseModel):
     name: str
@@ -35,12 +54,26 @@ class ProjectResponse(BaseModel):
 
     class Config:
         from_attributes = True
-        
+
+
 class DocumentResponse(BaseModel):
     id: int
     project_id: int
     filename: str
     file_path: str
+    status: str
+
+    class Config:
+        from_attributes = True
+
+
+class DocumentDetailsResponse(BaseModel):
+    id: int
+    project_id: int
+    filename: str
+    file_path: str
+    status: str
+    text: str | None = None
 
     class Config:
         from_attributes = True
