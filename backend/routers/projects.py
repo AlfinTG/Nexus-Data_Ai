@@ -1,3 +1,5 @@
+from core.vector_store import VectorStore
+from core.text_chunker import TextChunker
 from fastapi import APIRouter, Depends, UploadFile, File, HTTPException
 from sqlalchemy.orm import Session
 
@@ -73,6 +75,11 @@ def upload_document(
 
     document_text = get_full_text(pdf_bytes)
 
+    chunker = TextChunker()
+    chunks = chunker.chunk_text(document_text)
+
+    vector_store = VectorStore()
+
     # Save document record
     document = models.Document(
     project_id=project_id,
@@ -85,6 +92,31 @@ def upload_document(
     db.add(document)
     db.commit()
     db.refresh(document)
+
+    # Save chunks into the database
+    for index, chunk in enumerate(chunks):
+        db_chunk = models.DocumentChunk(
+            document_id=document.id,
+            chunk_index=index,
+            content=chunk
+        )   
+        db.add(db_chunk)
+
+    db.commit()
+    metadata = [
+        {
+            "document_id": document.id,
+            "chunk_index": index,
+            "filename": file.filename,
+        }
+        for index in range(len(chunks))
+    ]
+
+    vector_store.add_chunks(
+        project_id=str(project_id),
+        chunks=chunks,
+        metadata=metadata
+    )
 
     return document
 
@@ -144,3 +176,20 @@ def get_document(
         )
 
     return document
+
+@router.get(
+    "/documents/{document_id}/chunks",
+    response_model=list[models.ChunkResponse]
+)
+def get_document_chunks(
+    document_id: int,
+    db: Session = Depends(get_db)
+):
+    chunks = (
+        db.query(models.DocumentChunk)
+        .filter(models.DocumentChunk.document_id == document_id)
+        .order_by(models.DocumentChunk.chunk_index)
+        .all()
+    )
+
+    return chunks

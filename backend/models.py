@@ -37,6 +37,21 @@ class Document(Base):
         server_default=func.now()
     )
 
+class DocumentChunk(Base):
+    __tablename__ = "document_chunks"
+
+    id = Column(Integer, primary_key=True, index=True)
+
+    document_id = Column(Integer, nullable=False, index=True)
+
+    chunk_index = Column(Integer, nullable=False)
+
+    content = Column(Text, nullable=False)
+
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
 
 # ==========================================
 # Pydantic Schemas
@@ -77,3 +92,13 @@ class DocumentDetailsResponse(BaseModel):
 
     class Config:
         from_attributes = True
+
+class ChunkResponse(BaseModel):
+    id: int
+    document_id: int
+    chunk_index: int
+    content: str
+
+    class Config:
+        from_attributes = True
+

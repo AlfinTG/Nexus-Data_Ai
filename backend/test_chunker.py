@@ -1,22 +1,12 @@
-from core.chunker import DocumentChunker
+from core.text_chunker import TextChunker
 
-sample_text = """
-This is a sample EPC specification.
+text = "Hello World " * 300
 
-The UPS capacity shall be 500 kVA.
+chunker = TextChunker()
 
-Cooling system shall operate continuously.
+chunks = chunker.chunk_text(text)
 
-Generator backup shall be available for 48 hours.
+print(f"Chunks created: {len(chunks)}")
 
-""" * 150
-
-chunker = DocumentChunker()
-
-chunks = chunker.split_text(sample_text)
-
-print(f"Total Chunks: {len(chunks)}")
-
-for i, chunk in enumerate(chunks[:3]):
-    print(f"\n------ Chunk {i+1} ------")
-    print(chunk[:250])
+for i, chunk in enumerate(chunks):
+    print(f"Chunk {i+1}: {len(chunk)} characters")

@@ -1,6 +1,7 @@
 from chromadb import PersistentClient
 from chromadb.config import Settings
 from sentence_transformers import SentenceTransformer
+import uuid
 
 
 class VectorStore:
@@ -19,16 +20,23 @@ class VectorStore:
         )
 
     def add_chunks(self, project_id, chunks, metadata):
+        print(f"Project ID: {project_id}")
+        print(f"Number of chunks: {len(chunks)}")
+
         collection = self.get_collection(project_id)
 
         embeddings = self.model.encode(chunks).tolist()
 
+        print(f"Embeddings created: {len(embeddings)}")
+
         collection.add(
-            ids=[str(i) for i in range(len(chunks))],
+            ids=[str(uuid.uuid4()) for _ in chunks],
             documents=chunks,
             embeddings=embeddings,
             metadatas=metadata,
         )
+
+        print("✅ Chunks added to ChromaDB")
 
     def search(self, project_id, query, k=5):
         collection = self.get_collection(project_id)
