@@ -5,6 +5,7 @@ from routers.projects import router as projects_router
 from database import Base, engine
 import models
 import os  
+from routers import chat
 
 load_dotenv()
 
@@ -16,7 +17,7 @@ app = FastAPI(
 Base.metadata.create_all(bind=engine)
 
 app.include_router(projects_router)
-
+app.include_router(chat.router)
 
 
 
