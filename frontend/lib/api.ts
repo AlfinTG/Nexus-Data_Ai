@@ -6,6 +6,7 @@ export const api = axios.create({
   baseURL: API_URL,
 });
 
+// Create a new project
 export const createProject = async (projectName: string) => {
   return api.post("/projects/", {
     name: projectName,
@@ -13,6 +14,12 @@ export const createProject = async (projectName: string) => {
   });
 };
 
+// Get all projects
+export const getProjects = async () => {
+  return api.get("/projects/");
+};
+
+// Upload a PDF to a project
 export const uploadFile = async (
   projectId: number,
   file: File
@@ -30,4 +37,12 @@ export const uploadFile = async (
       },
     }
   );
+};
+
+export const getProjectDocuments = async (projectId: number) => {
+  return api.get(`/projects/${projectId}/documents`);
+};
+
+export const getDocument = async (documentId: number) => {
+  return api.get(`/projects/documents/${documentId}`);
 };
