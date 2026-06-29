@@ -6,7 +6,6 @@ import Link from "next/link";
 import {
   getProjectDocuments,
   uploadFile,
-  getDocument,
 } from "@/lib/api";
 
 type Document = {
@@ -83,20 +82,6 @@ function ProjectDetails({ projectId }: { projectId: number }) {
       setUploading(false);
     }
   };
-
-  const handleView = async (documentId: number) => {
-  try {
-    const response = await getDocument(documentId);
-
-    console.log(response.data);
-
-    // We'll improve this in the next step
-    alert("Document fetched successfully.");
-  } catch (error) {
-    console.error(error);
-    alert("Unable to fetch document.");
-  }
-};
 
   return (
     <main className="min-h-screen bg-gray-100 p-10">
@@ -196,12 +181,11 @@ function ProjectDetails({ projectId }: { projectId: number }) {
 
                 </div>
 
-               <button
-  onClick={() => handleView(doc.id)}
-  className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
->
-  View
-</button>
+                <button
+                  className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
+                >
+                  View
+                </button>
 
               </div>
 
