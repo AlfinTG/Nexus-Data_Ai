@@ -1,8 +1,14 @@
 "use client";
 
-import { use } from "react";
-import { useEffect, useState } from "react";
+import { use, useEffect, useRef, useState } from "react";
 import Link from "next/link";
+import toast from "react-hot-toast";
+import {
+  ArrowLeft,
+  FileText,
+  Upload,
+} from "lucide-react";
+
 import {
   getProjectDocuments,
   uploadFile,
@@ -19,32 +25,50 @@ type Props = {
   }>;
 };
 
-export default function ProjectPage({ params }: Props) {
+export default function ProjectPage({
+  params,
+}: Props) {
   const { id } = use(params);
 
-  return <ProjectDetails projectId={Number(id)} />;
+  return (
+    <ProjectDetails
+      projectId={Number(id)}
+    />
+  );
 }
 
-function ProjectDetails({ projectId }: { projectId: number }) {
-  const [documents, setDocuments] = useState<Document[]>([]);
-  const [loading, setLoading] = useState(true);
+function ProjectDetails({
+  projectId,
+}: {
+  projectId: number;
+}) {
+  const [documents, setDocuments] =
+    useState<Document[]>([]);
 
-  const [selectedFile, setSelectedFile] = useState<File | null>(null);
-  const [uploading, setUploading] = useState(false);
+  const [loading, setLoading] =
+    useState(true);
 
-  const [successMessage, setSuccessMessage] = useState("");
-  const [errorMessage, setErrorMessage] = useState("");
+  const [selectedFile, setSelectedFile] =
+    useState<File | null>(null);
 
-  // Fetch all documents
+  const [uploading, setUploading] =
+    useState(false);
+
+  const fileInputRef =
+    useRef<HTMLInputElement>(null);
+
   const fetchDocuments = async () => {
     try {
-      const response = await getProjectDocuments(projectId);
-
-      console.log("Documents:", response.data);
+      const response =
+        await getProjectDocuments(projectId);
 
       setDocuments(response.data);
     } catch (error) {
-      console.error("Failed to fetch documents:", error);
+      console.error(error);
+
+      toast.error(
+        "Failed to load documents."
+      );
     } finally {
       setLoading(false);
     }
@@ -54,30 +78,37 @@ function ProjectDetails({ projectId }: { projectId: number }) {
     fetchDocuments();
   }, [projectId]);
 
-  // Upload PDF
   const handleUpload = async () => {
     if (!selectedFile) {
-      setErrorMessage("Please choose a PDF.");
+      toast.error(
+        "Please choose a PDF."
+      );
       return;
     }
 
     try {
       setUploading(true);
 
-      setSuccessMessage("");
-      setErrorMessage("");
+      await uploadFile(
+        projectId,
+        selectedFile
+      );
 
-      await uploadFile(projectId, selectedFile);
-
-      setSuccessMessage("PDF uploaded successfully!");
+      toast.success(
+        "PDF uploaded successfully!"
+      );
 
       setSelectedFile(null);
+
+      if (fileInputRef.current) {
+        fileInputRef.current.value = "";
+      }
 
       await fetchDocuments();
     } catch (error) {
       console.error(error);
 
-      setErrorMessage("Upload failed.");
+      toast.error("Upload failed.");
     } finally {
       setUploading(false);
     }
@@ -88,9 +119,10 @@ function ProjectDetails({ projectId }: { projectId: number }) {
 
       <Link
         href="/dashboard"
-        className="inline-block mb-6 text-blue-600 hover:underline"
+        className="inline-flex items-center gap-2 mb-6 text-blue-600 hover:underline"
       >
-        ← Back to Dashboard
+        <ArrowLeft className="w-5 h-5" />
+        Back to Dashboard
       </Link>
 
       <h1 className="text-4xl font-bold mb-8">
@@ -99,11 +131,10 @@ function ProjectDetails({ projectId }: { projectId: number }) {
 
       <div className="bg-white rounded-xl shadow-lg p-6">
 
-        {/* Top Stats */}
-
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6 mb-8">
 
-          <div className="bg-blue-50 rounded-xl p-6 shadow-sm">
+          <div className="bg-blue-50 rounded-xl p-6">
+
             <p className="text-gray-600">
               Project ID
             </p>
@@ -111,9 +142,11 @@ function ProjectDetails({ projectId }: { projectId: number }) {
             <h2 className="text-4xl font-bold">
               {projectId}
             </h2>
+
           </div>
 
-          <div className="bg-green-50 rounded-xl p-6 shadow-sm">
+          <div className="bg-green-50 rounded-xl p-6">
+
             <p className="text-gray-600">
               Total Documents
             </p>
@@ -121,9 +154,11 @@ function ProjectDetails({ projectId }: { projectId: number }) {
             <h2 className="text-4xl font-bold">
               {documents.length}
             </h2>
+
           </div>
 
-          <div className="bg-yellow-50 rounded-xl p-6 shadow-sm">
+          <div className="bg-yellow-50 rounded-xl p-6">
+
             <p className="text-gray-600">
               Status
             </p>
@@ -131,35 +166,48 @@ function ProjectDetails({ projectId }: { projectId: number }) {
             <h2 className="text-3xl font-bold">
               Active
             </h2>
+
           </div>
 
         </div>
-
-        {/* Messages */}
-
-        {successMessage && (
-          <p className="mb-5 text-green-600 font-semibold">
-            {successMessage}
-          </p>
-        )}
-
-        {errorMessage && (
-          <p className="mb-5 text-red-600 font-semibold">
-            {errorMessage}
-          </p>
-        )}
-
-        {/* Documents */}
 
         <h2 className="text-2xl font-bold mb-5">
           Uploaded Documents
         </h2>
 
         {loading ? (
-          <p>Loading documents...</p>
+          <div className="flex justify-center py-12">
+
+            <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
+
+          </div>
+
         ) : documents.length === 0 ? (
-          <p>No documents uploaded.</p>
+
+          <div className="text-center py-20">
+
+            <div className="flex justify-center">
+
+              <FileText className="w-20 h-20 text-gray-400" />
+
+            </div>
+
+            <h2 className="text-2xl font-bold mt-4">
+
+              No Documents
+
+            </h2>
+
+            <p className="text-gray-500 mt-2">
+
+              Upload your first PDF.
+
+            </p>
+
+          </div>
+
         ) : (
+
           <div className="space-y-4">
 
             {documents.map((doc) => (
@@ -171,38 +219,44 @@ function ProjectDetails({ projectId }: { projectId: number }) {
 
                 <div>
 
-                  <h3 className="text-xl font-semibold">
-                    📄 {doc.filename}
+                  <h3 className="flex items-center gap-2 text-xl font-semibold">
+
+                    <FileText className="w-6 h-6 text-blue-600" />
+
+                    {doc.filename}
+
                   </h3>
 
                   <p className="text-gray-500">
+
                     Document ID: {doc.id}
+
                   </p>
 
                 </div>
 
-                <button
+                <Link
+                  href={`/document/${doc.id}`}
                   className="bg-blue-600 text-white px-5 py-2 rounded-lg hover:bg-blue-700"
                 >
                   View
-                </button>
+                </Link>
 
               </div>
 
             ))}
 
           </div>
+
         )}
-
-        {/* Upload */}
-
-        <h2 className="text-2xl font-bold mt-10 mb-5">
+                <h2 className="text-2xl font-bold mt-10 mb-5">
           Upload New PDF
         </h2>
 
         <div className="border-2 border-dashed border-gray-300 rounded-xl bg-gray-50 p-8">
 
           <input
+            ref={fileInputRef}
             type="file"
             accept=".pdf"
             onChange={(e) => {
@@ -210,14 +264,15 @@ function ProjectDetails({ projectId }: { projectId: number }) {
                 setSelectedFile(e.target.files[0]);
               }
             }}
+            className="block w-full"
           />
 
           {selectedFile && (
-
             <div className="mt-5 bg-white rounded-xl shadow p-5">
 
-              <p className="font-semibold text-lg">
-                📄 {selectedFile.name}
+              <p className="flex items-center gap-2 font-semibold text-lg">
+                <FileText className="w-5 h-5 text-blue-600" />
+                {selectedFile.name}
               </p>
 
               <p className="text-gray-500">
@@ -225,14 +280,15 @@ function ProjectDetails({ projectId }: { projectId: number }) {
               </p>
 
             </div>
-
           )}
 
           <button
             onClick={handleUpload}
             disabled={uploading}
-            className="mt-6 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
+            className="mt-6 flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700 disabled:bg-gray-400"
           >
+            <Upload className="w-5 h-5" />
+
             {uploading ? "Uploading..." : "Upload PDF"}
           </button>
 
