@@ -3,22 +3,21 @@ from sentence_transformers import SentenceTransformer
 
 class EmbeddingGenerator:
     """
-    Generates vector embeddings for text chunks.
+    Generates vector embeddings for text.
+    Uses a singleton model so it loads only once.
     """
 
+    _model = None
+
     def __init__(self):
-        self.model = SentenceTransformer(
-            "all-MiniLM-L6-v2"
-        )
+        if EmbeddingGenerator._model is None:
+            print("Loading embedding model...")
+            EmbeddingGenerator._model = SentenceTransformer(
+                "BAAI/bge-small-en-v1.5"
+            )
 
     def generate_embedding(self, text: str):
-        """
-        Generate embedding for one text chunk.
-        """
-        return self.model.encode(text).tolist()
+        return EmbeddingGenerator._model.encode(text).tolist()
 
     def generate_embeddings(self, texts: list[str]):
-        """
-        Generate embeddings for multiple chunks.
-        """
-        return self.model.encode(texts).tolist()
+        return EmbeddingGenerator._model.encode(texts).tolist()

@@ -1,6 +1,8 @@
 from fastapi import APIRouter, HTTPException
+
 from core.vector_store import VectorStore
-from schemas.chat import SearchRequest
+from core.rag_pipeline import RAGPipeline
+from schemas.chat import SearchRequest, AskRequest
 
 router = APIRouter(
     prefix="/chat",
@@ -8,11 +10,14 @@ router = APIRouter(
 )
 
 vector_store = VectorStore()
+rag = RAGPipeline()
 
 
 @router.post("/search")
 def semantic_search(request: SearchRequest):
+
     try:
+
         results = vector_store.search(
             project_id=str(request.project_id),
             query=request.query,
@@ -28,3 +33,17 @@ def semantic_search(request: SearchRequest):
             status_code=500,
             detail=str(e)
         )
+
+
+@router.post("/ask")
+def ask_ai(request: AskRequest):
+
+    answer = rag.ask(
+        project_id=request.project_id,
+        query=request.query,
+        top_k=request.top_k
+    )
+
+    return {
+        "answer": answer
+    }
