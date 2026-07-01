@@ -30,23 +30,19 @@ class VectorStore:
         chunks,
         metadata
     ):
-        print("=" * 60)
-        print(f"Adding {len(chunks)} chunks to project {project_id}")
-
         collection = self.get_collection(project_id)
 
         embeddings = self.embedder.generate_embeddings(chunks)
-
-        print(f"Generated {len(embeddings)} embeddings")
 
         collection.add(
             ids=[str(uuid.uuid4()) for _ in chunks],
             documents=chunks,
             embeddings=embeddings,
-    )
+            metadatas=metadata,
+        )
 
-    print("Collection count:", collection.count())
-    print("=" * 60)
+        print("Collection count:", collection.count())
+        print("=" * 60)
 
     def search(
         self,
@@ -61,6 +57,11 @@ class VectorStore:
         return collection.query(
             query_embeddings=[query_embedding],
             n_results=k,
+            include=[
+                "documents",
+                "metadatas",
+                "distances"
+            ]
         )
 
     def count(self, project_id):

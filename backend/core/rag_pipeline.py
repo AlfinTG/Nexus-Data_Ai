@@ -16,7 +16,7 @@ class RAGPipeline:
         self,
         project_id: int,
         query: str,
-        top_k: int = 5
+        top_k: int = 8
     ) -> str:
 
         results = self.vector_store.search(
@@ -37,23 +37,37 @@ class RAGPipeline:
         query: str,
         context: str
     ) -> str:
+
         return f"""
-You are an EPC Engineering AI Assistant.
+    You are EPC Intelligence Platform AI.
 
-Answer ONLY using the information provided below.
+    You are an engineering assistant.
 
-If the answer cannot be found in the context,
-reply exactly:
+    Rules:
 
-"I could not find that information in the uploaded documents."
+1. Use ONLY the provided context.
+2. Never invent information.
+3. If the answer is missing, reply:
+   "I could not find that information in the uploaded documents."
+4. Answer in clear engineering language.
+5. Use bullet points whenever appropriate.
+6. If there are equations or units, preserve them.
 
-Context:
+========================
+DOCUMENT CONTEXT
+========================
+
 {context}
 
-Question:
+========================
+QUESTION
+========================
+
 {query}
 
-Answer:
+========================
+ANSWER
+========================
 """
 
     def ask(
@@ -61,22 +75,33 @@ Answer:
         project_id: int,
         query: str,
         top_k: int = 5
-    ) -> str:
+    ):
 
-        context = self.retrieve_context(
-            project_id,
-            query,
-            top_k
+        results = self.vector_store.search(
+            project_id=str(project_id),
+            query=query,
+            k=top_k
         )
 
-        if not context:
-            return "I could not find relevant information in the uploaded documents."
+        documents = results.get("documents", [[]])[0]
+        metadatas = results.get("metadatas", [[]])[0]
+
+        if not documents:
+            return {
+                "answer": "I could not find relevant information in the uploaded documents.",
+                "sources": []
+            }
+
+        context = "\n\n".join(documents)
 
         prompt = self.build_prompt(
-            query,
-            context
+            query=query,
+            context=context
         )
 
         answer = self.llm.generate(prompt)
 
-        return answer
+        return {
+            "answer": answer,
+            "sources": metadatas
+        }

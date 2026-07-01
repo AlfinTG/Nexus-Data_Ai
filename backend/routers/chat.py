@@ -38,12 +38,10 @@ def semantic_search(request: SearchRequest):
 @router.post("/ask")
 def ask_ai(request: AskRequest):
 
-    answer = rag.ask(
+    result = rag.ask(
         project_id=request.project_id,
         query=request.query,
         top_k=request.top_k
     )
 
-    return {
-        "answer": answer
-    }
+    return result
