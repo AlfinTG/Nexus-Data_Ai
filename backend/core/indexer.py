@@ -1,4 +1,4 @@
-from core.pdf_loader import PDFLoader
+from backend.core.test_llm import PDFLoader
 from core.chunker import DocumentChunker
 from core.vector_store import VectorStore
 
