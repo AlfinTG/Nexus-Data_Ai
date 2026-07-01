@@ -7,7 +7,7 @@ class DocumentChunker:
     suitable for embedding and retrieval.
     """
 
-    def __init__(
+    def _init_(
         self,
         chunk_size: int = 800,
         chunk_overlap: int = 100,
