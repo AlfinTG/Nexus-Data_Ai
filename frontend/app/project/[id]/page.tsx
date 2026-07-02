@@ -249,6 +249,13 @@ function ProjectDetails({
           </div>
 
         )}
+
+        <Link href={`/chat/${projectId}`}>
+  <button className="bg-green-600 text-white px-6 py-3 rounded-lg hover:bg-green-700">
+    💬 Open AI Chat
+  </button>
+</Link>
+
                 <h2 className="text-2xl font-bold mt-10 mb-5">
           Upload New PDF
         </h2>

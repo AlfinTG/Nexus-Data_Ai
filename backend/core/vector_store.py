@@ -32,7 +32,21 @@ class VectorStore:
     ):
         collection = self.get_collection(project_id)
 
+        print("Chunks received:", len(chunks))
+
         embeddings = self.embedder.generate_embeddings(chunks)
+
+        print("=" * 60)
+        print("Chunks received:", len(chunks))
+        print("First chunk:", chunks[0][:100] if chunks else "NO CHUNKS")
+
+        embeddings = self.embedder.generate_embeddings(chunks)
+
+        print("Embeddings type:", type(embeddings))
+        print("Embeddings length:", len(embeddings))
+        print("First embedding:", embeddings[0][:5] if embeddings else "NO EMBEDDINGS")
+        print("=" * 60)
+
 
         collection.add(
             ids=[str(uuid.uuid4()) for _ in chunks],

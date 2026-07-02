@@ -125,6 +125,11 @@ def upload_document(
         }
         for index in range(len(chunks))
     ]
+    print("=" * 60)
+    print("Document text length:", len(document_text))
+    print("Chunks:", len(chunks))
+    print(chunks[:3])   # first 3 chunks
+    print("=" * 60)
 
     vector_store.add_chunks(
         project_id=str(project_id),

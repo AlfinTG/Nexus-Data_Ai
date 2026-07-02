@@ -46,3 +46,11 @@ export const getProjectDocuments = async (projectId: number) => {
 export const getDocument = async (documentId: number) => {
   return api.get(`/projects/documents/${documentId}`);
 };
+
+export const askAI = (projectId: number, query: string) => {
+  return api.post("/chat/ask", {
+    project_id: projectId,
+    query,
+    top_k: 5,
+  });
+};
