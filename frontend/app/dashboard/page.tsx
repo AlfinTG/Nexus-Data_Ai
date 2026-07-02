@@ -5,6 +5,7 @@ import { useEffect, useState } from "react";
 import toast from "react-hot-toast";
 import { FolderOpen, Plus } from "lucide-react";
 import { getProjects, createProject } from "@/lib/api";
+import ThemeToggle from "@/components/theme/ThemeToggle";
 
 type Project = {
   id: number;
@@ -61,125 +62,298 @@ export default function Dashboard() {
     }
   };
 
-  return (
-    <main className="min-h-screen bg-gray-100 p-10">
+    return (
+  <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white p-10 dark:from-slate-950 dark:via-slate-900 dark:to-black">
 
-      <h1 className="text-4xl font-bold mb-8">
-        EPC Intelligence Platform
-      </h1>
+    {/* Header */}
 
-      <h2 className="text-2xl font-semibold mb-6">
-        Projects
-      </h2>
+    <div className="mb-10 flex flex-col gap-6 lg:flex-row lg:items-center lg:justify-between">
+
+      <div>
+
+        <p className="text-blue-600 font-semibold">
+          👋 Welcome Back
+        </p>
+
+        <h1 className="mt-2 text-5xl font-extrabold text-gray-900 dark:text-white">
+          Dashboard
+        </h1>
+
+        <p className="mt-3 text-lg text-gray-500 dark:text-slate-400">
+          Manage your EPC projects, engineering documents,
+          and AI workspace from one place.
+        </p>
+
+      </div>
+
+<div className="flex items-center gap-4">
+
+  <ThemeToggle />
+
+  <button
+    onClick={() => setShowModal(true)}
+    className="flex items-center gap-3 rounded-xl bg-blue-600 px-6 py-4 font-semibold text-white shadow-lg transition hover:scale-105 hover:bg-blue-700"
+  >
+    <Plus className="h-5 w-5" />
+    New Project
+  </button>
+
+</div>
+</div>
+    {/* Statistics */}
+
+    <div className="mb-12 grid gap-6 md:grid-cols-3">
+
+      <div className="rounded-2xl bg-white p-8 shadow-lg transition-colors dark:bg-slate-800">
+
+        <h2 className="text-5xl font-bold text-blue-600">
+          {projects.length}
+        </h2>
+
+        <p className="mt-3 text-gray-500 dark:text-slate-400">
+          Total Projects
+        </p>
+
+      </div>
+
+      <div className="rounded-2xl bg-white p-8 shadow-lg transition-colors dark:bg-slate-800">
+
+        <h2 className="text-5xl font-bold text-green-600">
+          AI
+        </h2>
+
+        <p className="mt-3 text-gray-500 dark:text-slate-400">
+          Semantic Search Ready
+        </p>
+
+      </div>
+
+      <div className="rounded-2xl bg-white p-8 shadow-lg transition-colors dark:bg-slate-800">
+
+        <h2 className="text-5xl font-bold text-purple-600">
+          EPC
+        </h2>
+
+        <p className="mt-3 text-gray-500 dark:text-slate-400">
+          Engineering Intelligence
+        </p>
+
+      </div>
+
+    </div>
+
+    {/* Search */}
+
+    <div className="mb-10">
+
+      <input
+        type="text"
+        placeholder="🔍 Search Projects (Coming Soon)"
+        disabled
+        className="w-full rounded-2xl border border-gray-200 bg-gray-50 p-5 shadow-sm outline-none disabled:cursor-not-allowed dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:placeholder:text-slate-500"
+      />
+
+    </div>
 
       {loading ? (
-        <div className="flex justify-center py-12">
-          <div className="h-10 w-10 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
-        </div>
-      ) : projects.length === 0 ? (
 
-        <div className="text-center py-20">
+  <div className="flex justify-center py-24">
 
-          <div className="flex justify-center">
-            <FolderOpen className="w-20 h-20 text-gray-400" />
+    <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
+
+  </div>
+
+) : projects.length === 0 ? (
+
+  <div className="rounded-3xl bg-white p-20 text-center shadow-lg dark:bg-slate-800">
+
+    <div className="flex justify-center">
+
+      <FolderOpen className="h-24 w-24 text-gray-300" />
+
+    </div>
+
+    <h2 className="mt-8 text-3xl font-bold dark:text-white">
+
+      No Projects Yet
+
+    </h2>
+
+    <p className="mt-4 text-gray-500 dark:text-slate-400">
+
+      Create your first engineering project to begin.
+
+    </p>
+
+    <button
+      onClick={() => setShowModal(true)}
+      className="mt-8 rounded-xl bg-blue-600 px-8 py-4 text-white transition hover:bg-blue-700"
+    >
+
+      Create Project
+
+    </button>
+
+  </div>
+
+) : (
+
+  <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+
+    {projects.map((project) => (
+
+      <Link
+        key={project.id}
+        href={`/project/${project.id}`}
+      >
+
+        <div className="group cursor-pointer rounded-3xl bg-white p-8 shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-2xl dark:bg-slate-800">
+
+          {/* Icon */}
+
+          <div className="flex items-center justify-between">
+
+            <div className="rounded-2xl bg-blue-100 p-4">
+
+              <FolderOpen className="h-8 w-8 text-blue-600" />
+
+            </div>
+
+            <span className="rounded-full bg-green-100 px-4 py-2 text-sm font-semibold text-green-700">
+
+              AI Ready
+
+            </span>
+
           </div>
 
-          <h2 className="text-2xl font-bold mt-4">
-            No Projects Yet
+          {/* Project Name */}
+
+          <h2 className="mt-8 text-2xl font-bold dark:text-white">
+
+            {project.name}
+
           </h2>
 
-          <p className="text-gray-500 mt-2">
-            Create your first project.
+          {/* Description */}
+
+          <p className="mt-3 text-gray-500 dark:text-slate-400">
+
+            {project.description || "Engineering Project"}
+
           </p>
 
-        </div>
+          {/* Information */}
 
-      ) : (
+          <div className="mt-8 space-y-3 text-gray-600 dark:text-slate-300">
 
-        <div className="space-y-4">
+            <div className="flex justify-between">
 
-          {projects.map((project) => (
+              <span>Project ID</span>
 
-            <Link
-              key={project.id}
-              href={`/project/${project.id}`}
-            >
-              <div className="bg-white rounded-lg shadow-md p-5 hover:shadow-lg transition cursor-pointer">
+              <span className="font-semibold">
 
-                <h3 className="text-xl font-semibold">
-                  {project.name}
-                </h3>
+                #{project.id}
 
-                <p className="text-gray-500">
-                  Project ID: {project.id}
-                </p>
+              </span>
 
-                {project.description && (
-                  <p className="mt-2 text-gray-600">
-                    {project.description}
-                  </p>
-                )}
+            </div>
 
-              </div>
+            <div className="flex justify-between">
 
-            </Link>
+              <span>Status</span>
 
-          ))}
+              <span className="text-green-600 font-semibold">
 
-        </div>
+                Active
 
-      )}
-
-      <button
-        onClick={() => setShowModal(true)}
-        className="mt-8 flex items-center gap-2 bg-blue-600 text-white px-6 py-3 rounded-lg hover:bg-blue-700"
-      >
-        <Plus className="w-5 h-5" />
-        New Project
-      </button>
-
-      {showModal && (
-
-        <div className="fixed inset-0 bg-black/40 flex items-center justify-center">
-
-          <div className="bg-white rounded-xl shadow-lg p-6 w-96">
-
-            <h2 className="text-2xl font-bold mb-5">
-              Create New Project
-            </h2>
-
-            <input
-              type="text"
-              placeholder="Project name"
-              value={projectName}
-              onChange={(e) => setProjectName(e.target.value)}
-              className="w-full border rounded-lg p-3 mb-5"
-            />
-
-            <div className="flex justify-end gap-3">
-
-              <button
-                onClick={() => setShowModal(false)}
-                className="px-5 py-2 rounded-lg bg-gray-300 hover:bg-gray-400"
-              >
-                Cancel
-              </button>
-
-              <button
-                onClick={handleCreateProject}
-                disabled={creating}
-                className="px-5 py-2 rounded-lg bg-blue-600 text-white hover:bg-blue-700 disabled:bg-gray-400"
-              >
-                {creating ? "Creating..." : "Create"}
-              </button>
+              </span>
 
             </div>
 
           </div>
 
+          {/* Footer */}
+
+          <div className="mt-8 flex items-center justify-between border-t border-slate-200 pt-6 dark:border-slate-700">
+
+            <span className="text-sm text-gray-500 dark:text-slate-400">
+
+              Open Workspace
+
+            </span>
+
+            <span className="text-xl transition group-hover:translate-x-2">
+
+              →
+
+            </span>
+
+          </div>
+
         </div>
 
-      )}
+      </Link>
+
+    ))}
+
+  </div>
+
+  )}
+
+  {/*Modal*/}
+
+      {showModal && (
+
+  <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
+
+    <div className="w-full max-w-md scale-100 rounded-3xl bg-white p-8 shadow-2xl transition-all duration-300 dark:bg-slate-800">
+
+      <h2 className="text-3xl font-bold dark:text-white">
+        Create New Project
+      </h2>
+
+      <p className="mt-2 text-gray-500 dark:text-slate-400">
+        Create a new EPC engineering workspace.
+      </p>
+
+      <input
+        type="text"
+        value={projectName}
+        onChange={(e) => setProjectName(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
+            handleCreateProject();
+          }
+        }}
+        placeholder="Project Name"
+        className="mt-8 w-full rounded-xl border border-slate-300 bg-white p-4 outline-none focus:ring-2 focus:ring-blue-600 dark:border-slate-700 dark:bg-slate-900 dark:text-white"
+      />
+
+      <div className="mt-8 flex justify-end gap-4">
+
+        <button
+          onClick={() => setShowModal(false)}
+          className="rounded-xl bg-gray-200 px-6 py-3 transition hover:bg-gray-300"
+        >
+          Cancel
+        </button>
+
+        <button
+          disabled={creating}
+          onClick={handleCreateProject}
+          className="rounded-xl bg-blue-600 px-6 py-3 text-white transition hover:bg-blue-700 disabled:opacity-50"
+        >
+          {creating ? "Creating..." : "Create"}
+        </button>
+
+      </div>
+
+    </div>
+
+  </div>
+
+)}
 
     </main>
   );
