@@ -52,7 +52,21 @@ class DocumentChunk(Base):
         DateTime(timezone=True),
         server_default=func.now()
     )
+class ChatMessage(Base):
+    __tablename__ = "chat_messages"
 
+    id = Column(Integer, primary_key=True, index=True)
+
+    project_id = Column(Integer, nullable=False, index=True)
+
+    role = Column(String, nullable=False)
+
+    message = Column(Text, nullable=False)
+
+    created_at = Column(
+        DateTime(timezone=True),
+        server_default=func.now()
+    )
 # ==========================================
 # Pydantic Schemas
 # ==========================================
@@ -98,6 +112,15 @@ class ChunkResponse(BaseModel):
     document_id: int
     chunk_index: int
     content: str
+
+    class Config:
+        from_attributes = True
+        
+class ChatMessageResponse(BaseModel):
+    id: int
+    project_id: int
+    role: str
+    message: str
 
     class Config:
         from_attributes = True

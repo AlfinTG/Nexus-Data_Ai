@@ -68,15 +68,16 @@ class VectorStore:
 
         query_embedding = self.embedder.generate_embedding(query)
 
-        return collection.query(
+        results = collection.query(
             query_embeddings=[query_embedding],
             n_results=k,
-            include=[
-                "documents",
-                "metadatas",
-                "distances"
-            ]
         )
+
+        print("=" * 80)
+        print(results)
+        print("=" * 80)
+
+        return results
 
     def count(self, project_id):
         collection = self.get_collection(project_id)

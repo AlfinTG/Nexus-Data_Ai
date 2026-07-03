@@ -1,5 +1,7 @@
 from fastapi import APIRouter, HTTPException
-
+from fastapi import Depends
+from sqlalchemy.orm import Session
+from database import get_db
 from core.vector_store import VectorStore
 from core.rag_pipeline import RAGPipeline
 from schemas.chat import SearchRequest, AskRequest
@@ -36,9 +38,13 @@ def semantic_search(request: SearchRequest):
 
 
 @router.post("/ask")
-def ask_ai(request: AskRequest):
+def ask_ai(
+    request: AskRequest,
+    db: Session = Depends(get_db)
+):
 
     result = rag.ask(
+        db=db,
         project_id=request.project_id,
         query=request.query,
         top_k=request.top_k
