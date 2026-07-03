@@ -22,94 +22,89 @@ const chats = [
 
 export default function ChatSidebar() {
   return (
-    <aside className="w-72 bg-gray-900 text-white flex flex-col">
+    <aside className="flex w-80 flex-col border-r border-slate-800 bg-slate-900 text-white">
 
-      {/* Logo */}
-      <div className="p-6 border-b border-gray-700">
-        <h1 className="text-2xl font-bold">
-          EPC AI
-        </h1>
-      </div>
+  {/* Logo */}
 
-      {/* New Chat Button */}
-      <div className="p-4">
-        <button className="w-full flex items-center justify-center gap-2 rounded-lg bg-blue-600 py-3 hover:bg-blue-700 transition">
-          <MessageSquarePlus className="w-5 h-5" />
-          New Chat
-        </button>
-      </div>
+  <div className="border-b border-slate-800 p-6">
 
-      {/* Chat History */}
-      <div className="flex-1 overflow-y-auto px-4 space-y-3">
+    <p className="text-sm font-semibold uppercase tracking-widest text-blue-400">
+      EPC Intelligence
+    </p>
 
-        <div className="rounded-lg bg-gray-800 p-3 cursor-pointer hover:bg-gray-700">
-          <div className="mt-6">
+    <h1 className="mt-2 text-3xl font-bold">
+      AI Assistant
+    </h1>
 
-  <h3 className="mb-3 text-sm uppercase text-gray-400">
-    Recent Chats
-  </h3>
-
-  <div className="space-y-2">
-
-    {chats.map((chat) => (
-
-      <div
-        key={chat.id}
-        className="cursor-pointer rounded-lg bg-gray-800 p-3 hover:bg-gray-700 transition"
-      >
-
-        <h4 className="font-medium">
-          {chat.title}
-        </h4>
-
-        <p className="text-xs text-gray-400">
-          {chat.date}
-        </p>
-
-      </div>
-
-    ))}
+    <p className="mt-2 text-sm text-slate-400">
+      Engineering Knowledge Workspace
+    </p>
 
   </div>
 
-</div>
-        </div>
+  {/* New Chat */}
 
-        <div className="rounded-lg bg-gray-800 p-3 cursor-pointer hover:bg-gray-700">
-          <div className="mt-6">
+  <div className="p-5">
 
-  <h3 className="mb-3 text-sm uppercase text-gray-400">
-    Recent Chats
-  </h3>
+    <button className="flex w-full items-center justify-center gap-3 rounded-2xl bg-blue-600 py-4 font-semibold transition hover:bg-blue-700">
 
-  <div className="space-y-2">
+      <MessageSquarePlus className="h-5 w-5" />
 
-    {chats.map((chat) => (
+      New Conversation
 
-      <div
-        key={chat.id}
-        className="cursor-pointer rounded-lg bg-gray-800 p-3 hover:bg-gray-700 transition"
-      >
-
-        <h4 className="font-medium">
-          {chat.title}
-        </h4>
-
-        <p className="text-xs text-gray-400">
-          {chat.date}
-        </p>
-
-      </div>
-
-    ))}
+    </button>
 
   </div>
 
-</div>
+  {/* Recent Chats */}
+
+  <div className="flex-1 overflow-y-auto px-5">
+
+    <h3 className="mb-4 text-xs font-semibold uppercase tracking-widest text-slate-500">
+
+      Recent Conversations
+
+    </h3>
+
+    <div className="space-y-3">
+
+      {chats.map((chat) => (
+
+        <div
+          key={chat.id}
+          className="cursor-pointer rounded-2xl border border-slate-800 bg-slate-800 p-4 transition hover:border-blue-500 hover:bg-slate-700"
+        >
+
+          <h4 className="font-semibold">
+            {chat.title}
+          </h4>
+
+          <p className="mt-2 text-xs text-slate-400">
+            {chat.date}
+          </p>
+
         </div>
 
-      </div>
+      ))}
 
-    </aside>
+    </div>
+
+  </div>
+
+  {/* Footer */}
+
+  <div className="border-t border-slate-800 p-6">
+
+    <p className="text-xs text-slate-500">
+      EPC Intelligence Platform
+    </p>
+
+    <p className="mt-1 text-sm font-semibold">
+      AI Engineering Assistant
+    </p>
+
+  </div>
+
+</aside>
   );
 }
