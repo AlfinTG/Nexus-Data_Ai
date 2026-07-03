@@ -1,7 +1,6 @@
 "use client";
 
-import { useState } from "react";
-
+import { use, useState } from "react";
 import { askAI } from "@/lib/api";
 
 import ChatSidebar from "@/components/chat/ChatSidebar";
@@ -14,8 +13,17 @@ type Message = {
   role: "user" | "assistant";
   content: string;
 };
+type Props = {
+  params: Promise<{
+    projectId: string;
+  }>;
+};
 
-export default function ChatPage() {
+export default function ChatPage({
+  params,
+}: Props) {
+
+  const { projectId } = use(params);
   const [messages, setMessages] = useState<Message[]>([
     {
       role: "assistant",
@@ -33,26 +41,26 @@ export default function ChatPage() {
 
     // Add user message
     setMessages((prev) => [
-      ...prev,
-      {
-        role: "user",
-        content: message,
-      },
-    ]);
-
+  ...prev,
+  {
+    role: "assistant",
+    content:
+      "⚠️ Sorry, I couldn't contact the AI service right now. Please try again in a few moments.",
+  },
+]);
     try {
       setLoading(true);
       setTyping(true);
 
       // Replace 1 with dynamic projectId later
-      const response = await askAI(1, message);
-
+const response = await askAI(Number(projectId), message);
       setMessages((prev) => [
         ...prev,
         {
           role: "assistant",
-          content: response.data.answer,
-        },
+content:
+  response.data.answer ||
+  "I couldn't find relevant information in the uploaded documents.",        },
       ]);
     } catch (error) {
       console.error(error);
@@ -71,22 +79,22 @@ export default function ChatPage() {
   };
 
   return (
-    <main className="flex h-screen bg-gray-100">
-
+<main className="flex h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white">
       {/* Sidebar */}
       <ChatSidebar />
 
       {/* Chat Area */}
-      <section className="flex flex-1 flex-col">
-
+<section className="flex flex-1 flex-col overflow-hidden">
         {/* Header */}
-        <ChatHeader />
-
+<ChatHeader
+  projectId={Number(projectId)}
+/>
         {/* Messages */}
-        <ChatWindow
-          messages={messages}
-          setInput={setInput}
-        />
+       <ChatWindow
+  messages={messages}
+  setInput={setInput}
+  projectId={Number(projectId)}
+/>
 
         {/* Typing Indicator */}
         {typing && <TypingIndicator />}
