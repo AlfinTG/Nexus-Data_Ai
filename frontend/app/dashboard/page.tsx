@@ -6,6 +6,8 @@ import toast from "react-hot-toast";
 import { FolderOpen, Plus } from "lucide-react";
 import { getProjects, createProject } from "@/lib/api";
 import ThemeToggle from "@/components/theme/ThemeToggle";
+import { motion } from "framer-motion";
+import Skeleton from "@/components/ui/Skeleton";
 
 type Project = {
   id: number;
@@ -62,7 +64,28 @@ export default function Dashboard() {
     }
   };
 
-    return (
+    if (loading) {
+  return (
+    <main className="min-h-screen p-10 dark:bg-slate-950">
+      <Skeleton className="mb-10 h-12 w-72" />
+
+      <div className="mb-10 grid gap-6 md:grid-cols-3">
+        <Skeleton className="h-36" />
+        <Skeleton className="h-36" />
+        <Skeleton className="h-36" />
+      </div>
+
+      <Skeleton className="mb-8 h-14 w-full" />
+
+      <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
+        <Skeleton className="h-64" />
+        <Skeleton className="h-64" />
+        <Skeleton className="h-64" />
+      </div>
+    </main>
+  );
+}
+  return(
   <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white p-10 dark:from-slate-950 dark:via-slate-900 dark:to-black">
 
     {/* Header */}
@@ -154,16 +177,7 @@ export default function Dashboard() {
       />
 
     </div>
-
-      {loading ? (
-
-  <div className="flex justify-center py-24">
-
-    <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
-
-  </div>
-
-) : projects.length === 0 ? (
+  ) : projects.length === 0 ? (
 
   <div className="rounded-3xl bg-white p-20 text-center shadow-lg dark:bg-slate-800">
 
@@ -207,7 +221,19 @@ export default function Dashboard() {
         href={`/project/${project.id}`}
       >
 
-        <div className="group cursor-pointer rounded-3xl bg-white p-8 shadow-lg transition duration-300 hover:-translate-y-2 hover:shadow-2xl dark:bg-slate-800">
+       <motion.div
+  whileHover={{
+    y: -8,
+    scale: 1.02,
+  }}
+  whileTap={{
+    scale: 0.98,
+  }}
+  transition={{
+    duration: 0.25,
+  }}
+  className="group cursor-pointer rounded-3xl bg-white p-8 shadow-lg transition dark:bg-slate-800"
+>
 
           {/* Icon */}
 
@@ -291,7 +317,7 @@ export default function Dashboard() {
 
           </div>
 
-        </div>
+        </motion.div>
 
       </Link>
 
@@ -299,15 +325,19 @@ export default function Dashboard() {
 
   </div>
 
-  )}
+  )
 
   {/*Modal*/}
 
       {showModal && (
-
   <div className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm">
 
-    <div className="w-full max-w-md scale-100 rounded-3xl bg-white p-8 shadow-2xl transition-all duration-300 dark:bg-slate-800">
+    <motion.div
+      initial={{ opacity: 0, scale: 0.9 }}
+      animate={{ opacity: 1, scale: 1 }}
+      transition={{ duration: 0.25 }}
+      className="w-full max-w-md rounded-3xl bg-white p-8 shadow-2xl dark:bg-slate-900"
+    >
 
       <h2 className="text-3xl font-bold dark:text-white">
         Create New Project
@@ -331,7 +361,6 @@ export default function Dashboard() {
       />
 
       <div className="mt-8 flex justify-end gap-4">
-
         <button
           onClick={() => setShowModal(false)}
           className="rounded-xl bg-gray-200 px-6 py-3 transition hover:bg-gray-300"
@@ -346,15 +375,14 @@ export default function Dashboard() {
         >
           {creating ? "Creating..." : "Create"}
         </button>
-
       </div>
 
-    </div>
+    </motion.div>
 
   </div>
-
 )}
 
-    </main>
-  );
+     </main>
+
+   );
 }

@@ -82,3 +82,4 @@ frontend/.next/
 frontend/out/
 frontend/.env.local
 node_modules
+node_modules
