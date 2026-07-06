@@ -1,32 +1,37 @@
-import requests
+import os
+
+from dotenv import load_dotenv
+from google import genai
+
+load_dotenv()
 
 
 class LLMService:
     """
-    Connects to the local Ollama LLM.
+    Connects to Google's Gemini API.
     """
 
     def __init__(self):
-        self.url = "http://localhost:11434/api/generate"
-        self.model = "llama3"
+        api_key = os.getenv("GEMINI_API_KEY")
+
+        if not api_key:
+            raise Exception(
+                "GEMINI_API_KEY not found in .env"
+            )
+
+        self.client = genai.Client(api_key=api_key)
+        self.model = "gemini-2.5-flash"
 
     def generate(self, prompt: str) -> str:
         try:
-            response = requests.post(
-                self.url,
-                json={
-                    "model": self.model,
-                    "prompt": prompt,
-                    "stream": False,
-                },
-                timeout=120,
+            response = self.client.models.generate_content(
+                model=self.model,
+                contents=prompt,
             )
 
-            response.raise_for_status()
+            return response.text
 
-            return response.json()["response"]
-
-        except requests.exceptions.RequestException:
+        except Exception as e:
             raise Exception(
-                "Unable to connect to the local AI model (Ollama). Please ensure Ollama is running."
+                f"Gemini request failed: {e}"
             )

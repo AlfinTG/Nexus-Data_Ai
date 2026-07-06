@@ -75,11 +75,7 @@ def upload_document(
 
     document_text = get_full_text(pdf_bytes)
 
-    print("=" * 60)
-    print("Extracted text length:", len(document_text))
-    print("First 500 characters:")
-    print(document_text[:500])
-    print("=" * 60)
+    
 
     chunker = TextChunker()
     chunks = chunker.chunk_text(document_text)
