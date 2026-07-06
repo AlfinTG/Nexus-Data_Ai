@@ -171,6 +171,7 @@ QUESTION
 
         context = retrieval["context"]
         sources = retrieval["sources"]
+        distances = retrieval["distances"]
 
         if not context:
             return {
@@ -207,9 +208,10 @@ QUESTION
             answer
         )
 
+        distances = retrieval["distances"]
+
         confidence = self.confidence.estimate(
-            answer,
-            context
+            distances
         )
 
         unique_sources = []
