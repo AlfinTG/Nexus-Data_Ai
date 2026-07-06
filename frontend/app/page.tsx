@@ -13,11 +13,11 @@ import {
 
 export default function Home() {
   return (
-    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white">
+    <main className="min-h-screen bg-gradient-to-br from-slate-50 via-blue-50 to-white dark:from-slate-950 dark:via-slate-900 dark:to-black">
 
       {/* ================= NAVBAR ================= */}
 
-      <nav className="fixed top-0 left-0 right-0 z-50 border-b bg-white/80 backdrop-blur-lg">
+      <nav className="fixed top-0 left-0 right-0 z-50 border-b border-slate-200 bg-white/80 backdrop-blur-lg dark:border-slate-800 dark:bg-slate-900/80">
         <div className="mx-auto flex max-w-7xl items-center justify-between px-8 py-4">
 
           <div className="flex items-center gap-3">
@@ -27,11 +27,11 @@ export default function Home() {
             </div>
 
             <div>
-              <h1 className="text-xl font-bold">
+              <h1 className="text-xl font-bold text-slate-900 dark:text-white">
                 EPC Intelligence
               </h1>
 
-              <p className="text-xs text-gray-500">
+              <p className="text-xs text-gray-500 dark:text-slate-400">
                 AI Powered Engineering Platform
               </p>
             </div>
@@ -42,7 +42,7 @@ export default function Home() {
 
             <Link
               href="/dashboard"
-              className="rounded-lg px-4 py-2 font-medium text-gray-700 hover:bg-gray-100"
+              className="rounded-lg px-4 py-2 font-medium text-gray-700 transition hover:bg-gray-100 dark:text-slate-200 dark:hover:bg-slate-800"
             >
               Dashboard
             </Link>
@@ -72,11 +72,11 @@ export default function Home() {
 
       <section className="mx-auto flex max-w-7xl flex-col items-center px-8 pt-40 pb-24 text-center">
 
-        <div className="rounded-full bg-blue-100 px-6 py-2 text-blue-700 font-semibold">
+        <div className="rounded-full bg-blue-100 px-6 py-2 font-semibold text-blue-700 dark:bg-slate-800 dark:text-blue-400">
           🚀 AI Powered Engineering Intelligence
         </div>
 
-        <h1 className="mt-8 max-w-5xl text-6xl font-extrabold leading-tight text-gray-900">
+        <h1 className="mt-8 max-w-5xl text-6xl font-extrabold leading-tight text-gray-900 dark:text-white">
 
           Transform Engineering Documents
 
@@ -86,7 +86,7 @@ export default function Home() {
 
         </h1>
 
-        <p className="mt-8 max-w-3xl text-xl text-gray-600">
+        <p className="mt-8 max-w-3xl text-xl text-gray-600 dark:text-slate-400">
 
           Upload EPC engineering documents, organize projects,
           perform semantic search, and ask AI questions using
@@ -110,7 +110,7 @@ export default function Home() {
 
           <Link href="/chat">
 
-            <button className="flex items-center gap-3 rounded-xl border border-gray-300 bg-white px-8 py-4 text-lg font-semibold transition hover:bg-gray-100">
+            <button className="flex items-center gap-3 rounded-xl border border-gray-300 bg-white px-8 py-4 text-lg font-semibold transition hover:bg-gray-100 dark:border-slate-700 dark:bg-slate-800 dark:text-white dark:hover:bg-slate-700">
 
               <Sparkles className="h-6 w-6" />
 
@@ -131,15 +131,15 @@ export default function Home() {
         className="mx-auto grid max-w-7xl gap-8 px-8 pb-24 md:grid-cols-3"
       >
 
-        <div className="rounded-2xl bg-white p-8 shadow-lg transition hover:-translate-y-2 hover:shadow-xl">
+        <div className="rounded-2xl bg-white p-8 shadow-lg transition hover:-translate-y-2 hover:shadow-xl dark:bg-slate-800">
 
           <FolderOpen className="h-12 w-12 text-blue-600" />
 
-          <h2 className="mt-6 text-2xl font-bold">
+          <h2 className="mt-6 text-2xl font-bold dark:text-white">
             Project Management
           </h2>
 
-          <p className="mt-4 text-gray-600 leading-7">
+          <p className="mt-4 text-gray-600 leading-7 dark:text-slate-400">
             Organize engineering projects,
             upload documents,
             and manage all EPC files
@@ -148,15 +148,15 @@ export default function Home() {
 
         </div>
 
-        <div className="rounded-2xl bg-white p-8 shadow-lg transition hover:-translate-y-2 hover:shadow-xl">
+        <div className="rounded-2xl bg-white p-8 shadow-lg transition hover:-translate-y-2 hover:shadow-xl dark:bg-slate-800">
 
           <FileText className="h-12 w-12 text-green-600" />
 
-          <h2 className="mt-6 text-2xl font-bold">
+          <h2 className="mt-6 text-2xl font-bold dark:text-white">
             Smart PDF Processing
           </h2>
 
-          <p className="mt-4 text-gray-600 leading-7">
+          <p className="mt-4 leading-7 text-gray-600 dark:text-slate-400">
             Automatically extract,
             chunk,
             embed,
@@ -166,15 +166,15 @@ export default function Home() {
 
         </div>
 
-        <div className="rounded-2xl bg-white p-8 shadow-lg transition hover:-translate-y-2 hover:shadow-xl">
+        <div className="rounded-2xl bg-white p-8 shadow-lg transition hover:-translate-y-2 hover:shadow-xl dark:bg-slate-800">
 
           <Bot className="h-12 w-12 text-purple-600" />
 
-          <h2 className="mt-6 text-2xl font-bold">
+          <h2 className="mt-6 text-2xl font-bold dark:text-white">
             AI Assistant
           </h2>
 
-          <p className="mt-4 text-gray-600 leading-7">
+          <p className="mt-4 text-gray-600 leading-7 dark:text-slate-400">
             Ask natural language questions
             about your engineering documents
             and receive accurate AI-powered answers.
@@ -185,55 +185,55 @@ export default function Home() {
       </section>
     {/* ================= STATS ================= */}
 
-<section className="bg-white py-24">
+<section className="bg-white py-24 dark:bg-slate-900">
 
   <div className="mx-auto max-w-7xl px-8">
 
     <div className="grid gap-8 md:grid-cols-4">
 
-      <div className="rounded-2xl border bg-blue-50 p-8 text-center">
+      <div className="rounded-2xl border border-slate-200 bg-blue-50 p-8 text-center dark:border-slate-700 dark:bg-slate-800">
 
         <h2 className="text-5xl font-bold text-blue-600">
           500+
         </h2>
 
-        <p className="mt-3 text-gray-600">
+        <p className="mt-3 text-gray-600 dark:text-slate-400">
           Engineering Documents
         </p>
 
       </div>
 
-      <div className="rounded-2xl border bg-green-50 p-8 text-center">
+      <div className="rounded-2xl border border-slate-200 bg-green-50 p-8 text-center dark:border-slate-700 dark:bg-slate-800">
 
         <h2 className="text-5xl font-bold text-green-600">
           AI
         </h2>
 
-        <p className="mt-3 text-gray-600">
+        <p className="mt-3 text-gray-600 dark:text-slate-400">
           Semantic Search Ready
         </p>
 
       </div>
 
-      <div className="rounded-2xl border bg-purple-50 p-8 text-center">
+      <div className="rounded-2xl border border-slate-200 bg-purple-50 p-8 text-center dark:border-slate-700 dark:bg-slate-800">
 
         <h2 className="text-5xl font-bold text-purple-600">
           24/7
         </h2>
 
-        <p className="mt-3 text-gray-600">
+        <p className="mt-3 text-gray-600 dark:text-slate-400">
           AI Assistance
         </p>
 
       </div>
 
-      <div className="rounded-2xl border bg-orange-50 p-8 text-center">
+      <div className="rounded-2xl border border-slate-200 bg-orange-50 p-8 text-center dark:border-slate-700 dark:bg-slate-800">
 
         <h2 className="text-5xl font-bold text-orange-600">
           EPC
         </h2>
 
-        <p className="mt-3 text-gray-600">
+        <p className="mt-3 text-gray-600 dark:text-slate-400">
           Engineering Intelligence
         </p>
 
@@ -247,17 +247,17 @@ export default function Home() {
 
 {/* ================= HOW IT WORKS ================= */}
 
-<section className="bg-slate-50 py-24">
+<section className="bg-slate-50 py-24 dark:bg-slate-950">
 
   <div className="mx-auto max-w-7xl px-8">
 
     <div className="text-center">
 
-      <h2 className="text-4xl font-bold">
+      <h2 className="text-4xl font-bold text-slate-900 dark:text-white">
         How It Works
       </h2>
 
-      <p className="mt-4 text-lg text-gray-600">
+      <p className="mt-4 text-lg text-gray-600 dark:text-slate-400">
         Upload → Process → Search → Ask AI
       </p>
 
@@ -271,11 +271,11 @@ export default function Home() {
           1
         </div>
 
-        <h3 className="mt-6 text-xl font-bold">
+        <h3 className="mt-6 text-xl font-bold text-slate-900 dark:text-white">
           Upload PDF
         </h3>
 
-        <p className="mt-3 text-gray-600">
+        <p className="mt-3 text-gray-600 dark:text-slate-400">
           Upload engineering drawings and EPC documents.
         </p>
 
@@ -287,11 +287,11 @@ export default function Home() {
           2
         </div>
 
-        <h3 className="mt-6 text-xl font-bold">
+        <h3 className="mt-6 text-xl font-bold text-slate-900 dark:text-white">
           AI Processing
         </h3>
 
-        <p className="mt-3 text-gray-600">
+        <p className="mt-3 text-gray-600 dark:text-slate-400">
           Documents are parsed, chunked and embedded automatically.
         </p>
 
@@ -303,11 +303,11 @@ export default function Home() {
           3
         </div>
 
-        <h3 className="mt-6 text-xl font-bold">
+        <h3 className="mt-6 text-xl font-bold text-slate-900 dark:text-white">
           Semantic Search
         </h3>
 
-        <p className="mt-3 text-gray-600">
+        <p className="mt-3 text-gray-600 dark:text-slate-400">
           AI retrieves the most relevant engineering knowledge.
         </p>
 
@@ -319,11 +319,11 @@ export default function Home() {
           4
         </div>
 
-        <h3 className="mt-6 text-xl font-bold">
+        <h3 className="mt-6 text-xl font-bold text-slate-900 dark:text-white">
           Get Answers
         </h3>
 
-        <p className="mt-3 text-gray-600">
+        <p className="mt-3 text-gray-600 dark:text-slate-400">
           Ask natural language questions and receive AI-powered answers.
         </p>
 
@@ -389,7 +389,7 @@ export default function Home() {
               EPC Intelligence Platform
             </h2>
 
-            <p className="mt-2 text-gray-400">
+            <p className="mt-2 text-gray-400 dark:text-slate-400">
               AI-Powered Engineering Document Intelligence
             </p>
 

@@ -164,7 +164,7 @@ function ProjectDetails({
 
   <div className="rounded-2xl bg-white p-8 shadow-lg transition-colors dark:bg-slate-800">
 
-    <p className="text-gray-500">
+    <p className="text-gray-500 dark:text-slate-400">
       Project ID
     </p>
 
@@ -174,25 +174,25 @@ function ProjectDetails({
 
   </div>
 
-  <div className="rounded-2xl bg-white p-8 shadow-lg">
+  <div className="rounded-2xl bg-white p-8 shadow-lg transition-colors dark:bg-slate-800">
 
     <p className="text-gray-500 dark:text-slate-400">
       Documents
     </p>
 
-    <h2 className="mt-4 text-5xl font-bold text-green-600">
+    <h2 className="mt-4 text-5xl font-bold text-green-600 dark:text-green-400">
       {documents.length}
     </h2>
 
   </div>
 
-  <div className="rounded-2xl bg-white p-8 shadow-lg">
+  <div className="rounded-2xl bg-white p-8 shadow-lg transition-colors dark:bg-slate-800">
 
-    <p className="text-gray-500">
+    <p className="text-gray-500 dark:text-slate-400">
       Status
     </p>
 
-    <h2 className="mt-4 text-4xl font-bold text-purple-600">
+    <h2 className="mt-4 text-4xl font-bold text-purple-400">
       Active
     </h2>
 
@@ -404,7 +404,7 @@ function ProjectDetails({
 
           </h3>
 
-          <p className="text-gray-500">
+          <p className="text-gray-500 dark:text-slate-400">
             Ready for upload
           </p>
 

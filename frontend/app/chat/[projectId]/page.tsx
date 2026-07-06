@@ -43,9 +43,8 @@ export default function ChatPage({
     setMessages((prev) => [
   ...prev,
   {
-    role: "assistant",
-    content:
-      "⚠️ Sorry, I couldn't contact the AI service right now. Please try again in a few moments.",
+    role: "user",
+    content: message,
   },
 ]);
     try {
