@@ -193,7 +193,14 @@ QUESTION
             intent=intent
         )
 
-        answer = self.llm.generate(prompt)
+        try:
+            answer = self.llm.generate(prompt)
+        except Exception:
+            return {
+            "answer": "⚠️ AI service is temporarily unavailable. Please try again in a few moments.",
+            "confidence": 0,
+            "sources": []
+        }
 
         self.conversation.add_message(
             db,

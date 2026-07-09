@@ -83,3 +83,6 @@ frontend/out/
 frontend/.env.local
 node_modules
 node_modules
+
+# Local test PDFs
+pdfs/
