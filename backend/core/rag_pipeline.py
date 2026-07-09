@@ -27,6 +27,7 @@ class RAGPipeline:
             query=query,
             k=top_k
         )
+       
 
         documents = results.get("documents", [[]])[0]
         documents = self.cleaner.clean(documents)
