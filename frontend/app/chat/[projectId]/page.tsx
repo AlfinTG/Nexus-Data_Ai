@@ -1,5 +1,6 @@
 "use client";
 
+import { useEffect } from "react";
 import { use, useState } from "react";
 import { askAI } from "@/lib/api";
 
@@ -24,14 +25,13 @@ export default function ChatPage({
 }: Props) {
 
   const { projectId } = use(params);
-  const [messages, setMessages] = useState<Message[]>([
-    {
-      role: "assistant",
-      content:
-        "👋 Hello! I'm your EPC AI Assistant. Ask me anything about your project documents.",
-    },
-  ]);
+  const initialMessage: Message = {
+  role: "assistant",
+  content:
+    "👋 Hello! I'm your EPC AI Assistant. Ask me anything about your project documents.",
+};
 
+const [messages, setMessages] = useState<Message[]>([initialMessage]);
   const [input, setInput] = useState("");
   const [typing, setTyping] = useState(false);
   const [loading, setLoading] = useState(false);
@@ -87,6 +87,7 @@ content:
         {/* Header */}
 <ChatHeader
   projectId={Number(projectId)}
+  messages={messages}
 />
         {/* Messages */}
        <ChatWindow
@@ -94,6 +95,7 @@ content:
   setInput={setInput}
   projectId={Number(projectId)}
 />
+{loading && <TypingIndicator />}
 
         {/* Typing Indicator */}
         {typing && <TypingIndicator />}

@@ -7,7 +7,6 @@ import { FolderOpen, Plus } from "lucide-react";
 import { getProjects, createProject } from "@/lib/api";
 import ThemeToggle from "@/components/theme/ThemeToggle";
 import { motion } from "framer-motion";
-import Skeleton from "@/components/ui/Skeleton";
 
 type Project = {
   id: number;
@@ -66,22 +65,8 @@ export default function Dashboard() {
 
     if (loading) {
   return (
-    <main className="min-h-screen p-10 dark:bg-slate-950">
-      <Skeleton className="mb-10 h-12 w-72" />
-
-      <div className="mb-10 grid gap-6 md:grid-cols-3">
-        <Skeleton className="h-36" />
-        <Skeleton className="h-36" />
-        <Skeleton className="h-36" />
-      </div>
-
-      <Skeleton className="mb-8 h-14 w-full" />
-
-      <div className="grid gap-8 md:grid-cols-2 xl:grid-cols-3">
-        <Skeleton className="h-64" />
-        <Skeleton className="h-64" />
-        <Skeleton className="h-64" />
-      </div>
+    <main className="flex min-h-screen items-center justify-center dark:bg-slate-950">
+      <div className="h-12 w-12 animate-spin rounded-full border-4 border-blue-600 border-t-transparent"></div>
     </main>
   );
 }
