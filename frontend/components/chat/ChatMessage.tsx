@@ -1,6 +1,9 @@
 "use client";
 
-import { Bot, User } from "lucide-react";
+import { useState } from "react";
+import ReactMarkdown from "react-markdown";
+import remarkGfm from "remark-gfm";
+import { Bot, User, Copy, Check } from "lucide-react";
 
 type Props = {
   role: "user" | "assistant";
@@ -12,6 +15,17 @@ export default function ChatMessage({
   content,
 }: Props) {
   const isUser = role === "user";
+  const [copied, setCopied] = useState(false);
+  
+  const copyMessage = async () => {
+  await navigator.clipboard.writeText(content);
+
+  setCopied(true);
+
+  setTimeout(() => {
+    setCopied(false);
+  }, 2000);
+};
 
   return (
     <div
@@ -34,9 +48,43 @@ export default function ChatMessage({
             : "border border-slate-200 bg-white text-slate-800 dark:border-slate-700 dark:bg-slate-800 dark:text-slate-100"
         }`}
       >
-        <p className="whitespace-pre-wrap leading-7">
-          {content}
-        </p>
+        <div className="prose max-w-none whitespace-pre-wrap dark:prose-invert">
+<ReactMarkdown
+  remarkPlugins={[remarkGfm]}
+  components={{
+    code({ className, children, ...props }) {
+      return (
+        <pre className="my-4 overflow-x-auto rounded-xl bg-slate-900 p-4 text-sm text-green-300">
+          <code className={className} {...props}>
+            {children}
+          </code>
+        </pre>
+      );
+    },
+  }}
+>
+  {content}
+</ReactMarkdown>
+</div>
+
+{!isUser && (
+  <button
+    onClick={copyMessage}
+    className="mt-4 flex items-center gap-2 rounded-lg border border-slate-300 px-3 py-2 text-sm transition hover:bg-slate-100 dark:border-slate-600 dark:hover:bg-slate-700"
+  >
+    {copied ? (
+      <>
+        <Check className="h-4 w-4 text-green-500" />
+        Copied
+      </>
+    ) : (
+      <>
+        <Copy className="h-4 w-4" />
+        Copy
+      </>
+    )}
+  </button>
+)}
 
         <p className="mt-3 text-xs opacity-70">
           {new Date().toLocaleTimeString([], {

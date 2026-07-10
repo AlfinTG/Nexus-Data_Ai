@@ -1,15 +1,23 @@
 "use client";
 
+import ExportPDF from "./ExportPDF";
 import ThemeToggle from "@/components/theme/ThemeToggle";
 import { Moon, Sun } from "lucide-react";
 import { useTheme } from "next-themes";
 
+type Message = {
+  role: "user" | "assistant";
+  content: string;
+};
+
 type Props = {
   projectId: number;
+  messages: Message[];
 };
 
 export default function ChatHeader({
   projectId,
+  messages,
 }: Props) {
   const { theme, setTheme } = useTheme();
 
@@ -30,18 +38,27 @@ export default function ChatHeader({
         </p>
       </div>
 
-      <button
-        onClick={() =>
-          setTheme(theme === "dark" ? "light" : "dark")
-        }
-        className="rounded-xl border border-slate-300 bg-white p-3 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
-      >
-        {theme === "dark" ? (
-          <Sun className="h-5 w-5 text-yellow-400" />
-        ) : (
-          <Moon className="h-5 w-5 text-slate-700 dark:text-white" />
-        )}
-      </button>
+      <div className="flex items-center gap-3">
+
+  <ExportPDF
+    projectId={projectId}
+    messages={messages}
+  />
+
+  <button
+    onClick={() =>
+      setTheme(theme === "dark" ? "light" : "dark")
+    }
+    className="rounded-xl border border-slate-300 bg-white p-3 transition hover:bg-slate-100 dark:border-slate-700 dark:bg-slate-800 dark:hover:bg-slate-700"
+  >
+    {theme === "dark" ? (
+      <Sun className="h-5 w-5 text-yellow-400" />
+    ) : (
+      <Moon className="h-5 w-5 text-slate-700 dark:text-white" />
+    )}
+  </button>
+
+</div>
 
     </header>
   );
