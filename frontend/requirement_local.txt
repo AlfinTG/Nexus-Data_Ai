@@ -1,0 +1,21 @@
+# ==========================
+# Frontend
+# ==========================
+
+next
+react
+react-dom
+
+typescript
+
+tailwindcss
+postcss
+autoprefixer
+
+axios
+
+react-hot-toast
+lucide-react
+
+eslint
+eslint-config-next
