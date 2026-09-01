@@ -20,7 +20,7 @@ class RAGPipeline:
         self.confidence = ConfidenceEstimator()
         self.formatter = ResponseFormatter()
 
-    def retrieve_context(self, project_id: int, query: str, top_k: int = 5):
+    def retrieve_context(self, project_id: int, query: str, top_k: int | None = None):
 
         results = self.vector_store.search(
             project_id=str(project_id),
@@ -157,12 +157,12 @@ QUESTION
         db,
         project_id: int,
         query: str,
-        top_k: int = 5
+        top_k: int | None = None
     ):
 
         intent = self.intent.detect(query)
 
-        top_k = self.strategy.get_top_k(intent)
+        top_k = top_k if top_k is not None else self.strategy.get_top_k(intent)
 
         retrieval = self.retrieve_context(
             project_id,

@@ -6,7 +6,7 @@ from sqlalchemy.orm import Session
 import models
 from database import get_db
 from utils.file_handler import save_uploaded_file
-from core.pdf_parser import get_full_text
+from core.pdf_parser import extract_pages
 
 router = APIRouter(
     prefix="/projects",
@@ -106,13 +106,14 @@ def upload_document(
 
     db.commit()
     metadata = [
-        {
-            "document_id": document.id,
-            "chunk_index": index,
-            "filename": file.filename,
-        }
-        for index in range(len(chunks))
-    ]
+    {
+        "document_id": document.id,
+        "chunk_index": index,
+        "filename": file.filename,
+        "page": chunk_metadata[index]["page"],
+    }
+    for index in range(len(chunks))
+]
 
     vector_store.add_chunks(
         project_id=str(project_id),
